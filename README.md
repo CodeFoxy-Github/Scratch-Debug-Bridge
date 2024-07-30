@@ -1,4 +1,5 @@
 # Scratch Debug Bridge
 ### A remote debugger just adb for scratch
 ## Build.
-### Just Click ```One click Build.bat```
+### First ```git clone CodeFoxy-Github/Scratch-Debug-Bridge```
+### and Click ```One click Build.bat```
