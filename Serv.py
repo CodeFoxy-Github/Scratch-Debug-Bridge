@@ -91,11 +91,7 @@ def start_server():
 
 
 print("Starting the daemon...")
-# Check if the daemon is already running
-helpquit = websocket.WebSocket()
-helpquit.connect("ws://127.0.12.34")
-helpquit.send("splsleave")
-helpquit.close()
+
 
 # Initialize and start the WebSocket server
 server = WebsocketServer(host='127.0.12.34', port=80, loglevel=logging.ERROR)
