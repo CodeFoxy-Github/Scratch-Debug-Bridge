@@ -7,6 +7,8 @@ import ctypes
 import websocket
 import json
 from websocket_server import WebsocketServer
+import os
+from termcolor import colored
 
 def clear_console_line():
     """Clear the current line in the terminal."""
@@ -26,11 +28,17 @@ def handle_message(client, server, message):
         server_thread.raise_exception()
         server_thread.join()
         sys.exit()
-    else:
+    elif message.find("/errno: ") == -1 and message.find("/warno: ") == -1:
         clear_console_line()
-        print(f"<sdb> {client['id']}: {message}")
+        print(f"Client {client['id']}: {message}")
         print("<sdb>: ", end="")
         sys.stdout.flush()
+    elif message.find("/warno: ") == -1:
+        print(colored(message.replace("/errno: ", ""), 'light_red'))
+        print(colored("<sdb>: ", 'light_red'), end="")
+    else:
+        print(colored(message.replace("/warno: ", ""), 'light_yellow'))
+        print(colored("<sdb>: ", 'light_yellow'), end="")
 
 def client_left(client, server):
     """Handle client disconnection."""
@@ -82,12 +90,7 @@ def start_server():
     server_thread = ServerThread('ServerThread')
     server_thread.start()
 
-print("########################")
-print("# Scratch Debug Bridge #")
-print("#        V2.4          #")
-print("#    By: Codefoxy      #")
-print("########################")
-
+print("Starting the daemon...")
 # Check if the daemon is already running
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 result = sock.connect_ex(('localhost', 7420))
@@ -101,7 +104,6 @@ if result == 0:
     print("Error: Unable to stop the daemon. Please close it manually and press enter.")
     a = input()
 else:
-    print("Starting the daemon...")
     sock.close()
 
 # Initialize and start the WebSocket server
@@ -111,14 +113,55 @@ server.set_fn_client_left(client_left)
 server.set_fn_new_client(new_client)
 
 start_server()
+print("########################")
+print("# Scratch Debug Bridge #")
+print("#        V2.4          #")
+print("#    By: Codefoxy      #")
+print("########################")
 
 try:
     while True:
         clear_console_line()
         user_input = input("<sdb>: ")
         clear_console_line()
-        print("<sdb>: ", end="")
-        server.send_message_to_all(user_input)
+        if user_input == "clear":
+            os.system('cls' if os.name=='nt' else 'clear')
+        elif user_input == "help":
+            print("\nvar: ")
+            print("     add <var name>")
+            print("     del <var name>")
+            print("     pos <var name> <x> <y>")
+            print("     list")
+            print("     show <var name>")
+            print("     hide <var name>")
+            print("sprite:")
+            print("     pos <sprite name> <x> <y>")
+            print("     get <sprite name>")
+            print("         x")
+            print("         y")
+            print("         size")
+            print("         dir")
+            print("         costume #")
+            print("         direction")
+            print("     list")
+            print("utils:")
+            print("     echo <data>")
+            print("     clear")
+            print("     help")
+            print("         sprite")
+            print("         var")
+            print("     ")
+            print("${random} a random 2 number")
+            print("${hr} now hour")
+            print("${min} now minute")
+            print("${sec} now second\n")
+            print("${year} a random 4 number")
+            print("${month} now hour")
+            print("${day} now minute")
+            print("${week} now second")
+            
+        else:
+            server.send_message_to_all(user_input)
         time.sleep(0.2)
 except KeyboardInterrupt:
     print("\nDaemon stopped.")
