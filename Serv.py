@@ -1,5 +1,4 @@
 import logging
-import socket
 import time
 import threading
 import sys
@@ -9,7 +8,7 @@ import json
 from websocket_server import WebsocketServer
 import os
 from termcolor import colored
-
+from python_hosts import Hosts, HostsEntry
 def clear_console_line():
     """Clear the current line in the terminal."""
     sys.stdout.write('\r' + ' ' * 80 + '\r')
@@ -90,24 +89,16 @@ def start_server():
     server_thread = ServerThread('ServerThread')
     server_thread.start()
 
+
 print("Starting the daemon...")
 # Check if the daemon is already running
-sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-result = sock.connect_ex(('localhost', 7420))
-if result == 0:
-    print("Daemon is already running. Stopping it now.")
-    sock.close()
-    helpquit = websocket.WebSocket()
-    helpquit.connect("ws://localhost:7420")
-    helpquit.send("splsleave")
-    helpquit.close()
-    print("Error: Unable to stop the daemon. Please close it manually and press enter.")
-    a = input()
-else:
-    sock.close()
+helpquit = websocket.WebSocket()
+helpquit.connect("ws://127.0.12.34")
+helpquit.send("splsleave")
+helpquit.close()
 
 # Initialize and start the WebSocket server
-server = WebsocketServer(host='127.0.0.1', port=7420, loglevel=logging.ERROR)
+server = WebsocketServer(host='127.0.12.34', port=80, loglevel=logging.ERROR)
 server.set_fn_message_received(handle_message)
 server.set_fn_client_left(client_left)
 server.set_fn_new_client(new_client)
@@ -163,6 +154,7 @@ try:
         else:
             server.send_message_to_all(user_input)
         time.sleep(0.2)
+
 except KeyboardInterrupt:
     print("\nDaemon stopped.")
     server_thread.raise_exception()
