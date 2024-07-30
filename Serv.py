@@ -8,7 +8,6 @@ import json
 from websocket_server import WebsocketServer
 import os
 from termcolor import colored
-from python_hosts import Hosts, HostsEntry
 def clear_console_line():
     """Clear the current line in the terminal."""
     sys.stdout.write('\r' + ' ' * 80 + '\r')

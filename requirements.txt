@@ -8,6 +8,7 @@ psutil==6.0.0
 pycparser==2.22
 pyinstaller==6.9.0
 pyinstaller-hooks-contrib==2024.7
+python-hosts==1.0.7
 pywin32-ctypes==0.2.2
 setuptools==71.1.0
 termcolor==2.4.0
