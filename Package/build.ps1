@@ -11,8 +11,8 @@ $expatch = (Get-Item .).FullName
 Clear-Host
 Write-Output "Installing necessary packages..."
 
-pip install pyinstaller --quiet
-pip install pipreqs --quiet
+pip install pyinstaller
+pip install pipreqs
 
 Clear-Host
 
@@ -22,7 +22,7 @@ pipreqs ./ --encoding=utf8
 Clear-Host
 
 Write-Output "Downloading App packages..."
-pip install -r requirements.txt --quiet
+pip install -r requirements.txt
 
 Clear-Host
 
