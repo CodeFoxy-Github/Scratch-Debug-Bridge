@@ -115,12 +115,8 @@ server.set_fn_client_left(client_disconnect)
 server.set_fn_new_client(new_client_connection)
 
 initiate_server()
-print("########################")
-print("# Scratch Debug Bridge #")
-print("#        V2.4          #")
-print("#    By: Codefoxy      #")
-print("########################")
-
+print("Scratch Debug Bridge")
+print("By: Codefoxy")
 try:
     while stop == False:
         clear_line()
