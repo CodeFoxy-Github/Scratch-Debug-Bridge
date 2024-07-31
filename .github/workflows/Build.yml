@@ -35,6 +35,5 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
         git add --all
-        git commit -m "Action Auto Build." -a     
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v6.1.0
+        git commit -m "Action Auto Build." -a    
+        git push
