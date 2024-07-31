@@ -7,7 +7,7 @@ $scriptName = "Serv.py"
 $exeName = "Serv.exe"
 $finalExeName = "sdb.exe"
 $iconUrl = "https://files.catbox.moe/405st1.ico"
-
+$expatch = (Get-Item .).FullName
 Clear-Host
 Write-Output "Installing necessary packages..."
 
@@ -33,7 +33,7 @@ Clear-Host
 
 Write-Output "Building..."
 # Package the Python script using pyinstaller
-pyinstaller -F -i="$PSScriptRoot/icon.ico" $scriptName
+pyinstaller -F -i="$expatch/icon.ico" $scriptName
 # Delete the sdb file in the current directory if it exists
 if (Test-Path "./sdb.exe") {
     Remove-Item -Path "./sdb.exe" -Force
