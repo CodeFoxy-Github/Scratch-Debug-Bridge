@@ -11,8 +11,8 @@ $iconUrl = "https://files.catbox.moe/405st1.ico"
 Clear-Host
 Write-Output "Installing necessary packages..."
 
-pip install pyinstaller
-pip install pipreqs
+pip install pyinstaller --quiet
+pip install pipreqs --quiet
 
 Clear-Host
 
@@ -22,7 +22,7 @@ pipreqs ./ --encoding=utf8
 Clear-Host
 
 Write-Output "Downloading App packages..."
-pip install -r requirements.txt
+pip install -r requirements.txt --quiet
 
 Clear-Host
 
