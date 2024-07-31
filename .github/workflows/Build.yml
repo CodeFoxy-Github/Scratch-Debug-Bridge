@@ -23,4 +23,4 @@ jobs:
       uses: actions/setup-python@v3
     - name: build app
       run: |
-        cmd | buildforgithub
+        cmd.exe /c 'buildforgithub'
