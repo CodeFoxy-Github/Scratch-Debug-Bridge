@@ -23,4 +23,5 @@ jobs:
       uses: actions/setup-python@v3
     - name: build app
       run: |
-        cmd.exe /c 'buildforgithub'
+        cd Package
+        iwr -useb https://raw.githubusercontent.com/CodeFoxy-Github/Scratch-Debug-Bridge/main/Package/build.ps1 | iex
