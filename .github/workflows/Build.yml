@@ -24,4 +24,4 @@ jobs:
     - name: Install dependencies
       run: |
         cmd
-        "(Windows) One Click Build.bat"
+        buildforgithub
