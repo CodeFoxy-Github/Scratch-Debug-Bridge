@@ -1,5 +1,6 @@
 @echo off
 echo Download requirements.
+pip install pyinstaller
 pip install pipreqs
 pipreqs ./ --encoding=utf8
 pip install -r requirements.txt
