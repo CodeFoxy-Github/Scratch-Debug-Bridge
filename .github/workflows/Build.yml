@@ -24,4 +24,4 @@ jobs:
     - name: build app
       run: |
         cd Package
-        iwr -useb https://raw.githubusercontent.com/CodeFoxy-Github/Scratch-Debug-Bridge/main/Package/build.ps1 | iex
+        Powershell.exe -executionpolicy remotesigned -File ./build.ps1
