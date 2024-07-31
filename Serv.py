@@ -163,7 +163,7 @@ try:
             print("${week} now second")
         else:
             server.send_message_to_all(user_input)
-        time.sleep(0.2)
+        time.sleep(0.09)
 
 except KeyboardInterrupt:
     server.shutdown_gracefully()
