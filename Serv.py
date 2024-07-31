@@ -107,7 +107,7 @@ if result == 0:
     quit_websocket.close()
 else:
     sock.close()
-
+os.system('cls' if os.name == 'nt' else 'clear')
 # Initialize and start the WebSocket server
 server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
 server.set_fn_message_received(message_handler)
