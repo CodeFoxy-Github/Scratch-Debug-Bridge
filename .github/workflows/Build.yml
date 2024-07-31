@@ -23,4 +23,5 @@ jobs:
       uses: actions/setup-python@v3
     - name: build app
       run: |
-        cmd.exe /c 'buildforgithub'
+        cd Package
+        Powershell.exe -executionpolicy remotesigned -File ./build.ps1
