@@ -5,15 +5,18 @@ import sys
 import ctypes
 import websocket
 import json
+import socket
 from websocket_server import WebsocketServer
 import os
 from termcolor import colored
-def clear_console_line():
+global stop
+stop = False
+def clear_line():
     """Clear the current line in the terminal."""
     sys.stdout.write('\r' + ' ' * 80 + '\r')
     sys.stdout.flush()
 
-def handle_message(client, server, message):
+def message_handler(client, server, message):
     """Handle incoming messages from clients."""
     if message == "heartbeat.ping":
         server.send_message(client, "pong")
@@ -22,12 +25,15 @@ def handle_message(client, server, message):
         server.send_message(client, "yes")
         logging.info(f"Client {client['id']} inquired if we're awake!")
     elif message == "splsleave":
+        global stop
+        stop = True
+        server.shutdown_gracefully()
         print("\nDaemon stopped.")
         server_thread.raise_exception()
         server_thread.join()
         sys.exit()
     elif message.find("/errno: ") == -1 and message.find("/warno: ") == -1:
-        clear_console_line()
+        clear_line()
         print(f"Client {client['id']}: {message}")
         print("<sdb>: ", end="")
         sys.stdout.flush()
@@ -38,21 +44,21 @@ def handle_message(client, server, message):
         print(colored(message.replace("/warno: ", ""), 'light_yellow'))
         print(colored("<sdb>: ", 'light_yellow'), end="")
 
-def client_left(client, server):
+def client_disconnect(client, server):
     """Handle client disconnection."""
-    clear_console_line()
+    clear_line()
     print(f"Client {client['id']} has left.")
     print("<sdb>: ", end="")
     sys.stdout.flush()
 
-def new_client(client, server):
+def new_client_connection(client, server):
     """Handle new client connection."""
-    clear_console_line()
+    clear_line()
     print(f"Client {client['id']} has joined.")
     print("<sdb>: ", end="")
     sys.stdout.flush()
 
-class ServerThread(threading.Thread):
+class WebSocketServerThread(threading.Thread):
     def __init__(self, name):
         super().__init__(name=name)
         self.name = name
@@ -82,23 +88,33 @@ class ServerThread(threading.Thread):
                 ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
                 print('Failed to raise the exception.')
 
-def start_server():
+def initiate_server():
     """Start the WebSocket server thread."""
     global server_thread
-    server_thread = ServerThread('ServerThread')
+    server_thread = WebSocketServerThread('WebSocketServerThread')
     server_thread.start()
-
 
 print("Starting the daemon...")
 
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+result = sock.connect_ex(('localhost', 4328))
+if result == 0:
+    print("Daemon is already running. Stopping it now.")
+    sock.close()
+    quit_websocket = websocket.WebSocket()
+    quit_websocket.connect("ws://localhost:4328")
+    quit_websocket.send("splsleave")
+    quit_websocket.close()
+else:
+    sock.close()
 
 # Initialize and start the WebSocket server
-server = WebsocketServer(host='127.0.12.34', port=80, loglevel=logging.ERROR)
-server.set_fn_message_received(handle_message)
-server.set_fn_client_left(client_left)
-server.set_fn_new_client(new_client)
+server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
+server.set_fn_message_received(message_handler)
+server.set_fn_client_left(client_disconnect)
+server.set_fn_new_client(new_client_connection)
 
-start_server()
+initiate_server()
 print("########################")
 print("# Scratch Debug Bridge #")
 print("#        V2.4          #")
@@ -106,12 +122,12 @@ print("#    By: Codefoxy      #")
 print("########################")
 
 try:
-    while True:
-        clear_console_line()
+    while stop == False:
+        clear_line()
         user_input = input("<sdb>: ")
-        clear_console_line()
+        clear_line()
         if user_input == "clear":
-            os.system('cls' if os.name=='nt' else 'clear')
+            os.system('cls' if os.name == 'nt' else 'clear')
         elif user_input == "help":
             print("\nvar: ")
             print("     add <var name>")
@@ -145,12 +161,13 @@ try:
             print("${month} now hour")
             print("${day} now minute")
             print("${week} now second")
-            
         else:
             server.send_message_to_all(user_input)
         time.sleep(0.2)
 
 except KeyboardInterrupt:
+    server.shutdown_gracefully()
+    stop = True
     print("\nDaemon stopped.")
     server_thread.raise_exception()
     server_thread.join()
