@@ -54,6 +54,9 @@ if (Test-Path "./package.bat") {
 if (Test-Path "./icon.ico") {
     Remove-Item -Path "./icon.ico" -Recurse -Force
 }
+if (Test-Path "./requirements.txt") {
+    Remove-Item -Path "./requirements.txt" -Recurse -Force
+}
 
 # Copy the executable from the dist folder and rename it to sdb.exe
 if (Test-Path "./dist/$exeName") {
