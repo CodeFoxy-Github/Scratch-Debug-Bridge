@@ -166,7 +166,6 @@ def initiate_server():
 
 def daemon():
     print("Starting the daemon...")
-
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = sock.connect_ex(('localhost', 4328))
     if result == 0:
@@ -180,6 +179,7 @@ def daemon():
         sock.close()
     os.system('cls' if os.name == 'nt' else 'clear')
     # Initialize and start the WebSocket server
+    global server
     server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
     server.set_fn_message_received(message_handler)
     server.set_fn_client_left(client_disconnect)
