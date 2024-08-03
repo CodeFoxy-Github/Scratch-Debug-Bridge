@@ -191,8 +191,7 @@ if not any(vars(args).values()):
 else:
     if args.cmds:
         helpz()
-    else:
-        if args.shell:
+if args.shell:
         print("Scratch Debug Bridge")
         print("By: Codefoxy")
         daemon()
