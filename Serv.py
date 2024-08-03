@@ -189,7 +189,10 @@ def daemon():
 if not any(vars(args).values()):
     parser.print_help()
 else:
-    if args.shell:
+    if args.cmds:
+        helpz()
+    else:
+        if args.shell:
         print("Scratch Debug Bridge")
         print("By: Codefoxy")
         daemon()
