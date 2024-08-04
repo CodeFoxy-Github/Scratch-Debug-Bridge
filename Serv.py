@@ -249,9 +249,10 @@ if args.shell:
             else:
                 if not connected_clients:    
                     server.send_message_to_all(user_input)
-                else:
+                while not connected_clients:
                     print(colored("Warning: No client connected!", 'light_yellow'))
                     print(colored("<sdb>: ", 'light_yellow'), end="")
+                    break
             time.sleep(0.09)
     except KeyboardInterrupt:
         server.shutdown_gracefully()
