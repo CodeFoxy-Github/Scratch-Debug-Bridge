@@ -9,7 +9,7 @@ import argparse
 from websocket_server import WebsocketServer
 import os
 from termcolor import colored
-
+# todo color for join leave
 global stop
 stop = False
 global server_thread
