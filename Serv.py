@@ -4,9 +4,7 @@ import threading
 import sys
 import ctypes
 import websocket
-import json
 import socket
-import subprocess
 import argparse
 from websocket_server import WebsocketServer
 import os
@@ -14,6 +12,10 @@ from termcolor import colored
 
 global stop
 stop = False
+global server_thread
+global server
+global connected_clients
+connected_clients = []
 
 parser = argparse.ArgumentParser(
     prog="sdb",
@@ -34,24 +36,28 @@ parser.add_argument(
     action="store_true",
     help="See SDB commands."
 )
+
 parser.add_argument(
     "-r",
     "--run",
-    action="store_true",
+    nargs=argparse.REMAINDER,
     help="Run SDB command."
 )
+
+global args
 args = parser.parse_args()
 
 def helpz():
     """Display help information."""
     print("\nCommands available:")
     print("Variables:")
-    print("  add <var name>          - Add a new variable with the specified name.")
-    print("  del <var name>          - Delete the variable with the specified name.")
-    print("  pos <var name> <x> <y>  - Set the position of the variable.")
-    print("  list                    - List all variables.")
-    print("  show <var name>         - Show the specified variable.")
-    print("  hide <var name>         - Hide the specified variable.")
+    print("  var")
+    print("     add <var name>          - Add a new variable with the specified name.")
+    print("     del <var name>          - Delete the variable with the specified name.")
+    print("     pos <var name> <x> <y>  - Set the position of the variable.")
+    print("     list                    - List all variables.")
+    print("     show <var name>         - Show the specified variable.")
+    print("     hide <var name>         - Hide the specified variable.")
     
     print("\nSprites:")
     print("  pos <sprite name> <x> <y>  - Set the position of the sprite.")
@@ -70,8 +76,15 @@ def helpz():
     print("  help                   - Display this help message.")
     print("    sprite               - Display help for sprite commands.")
     print("    var                  - Display help for variable commands.")
+
+    print("\nEnvironment variables:")
+    print("  env                    - Environment variables ex. ${name}")
+    print("    list                 - List all environment variables.")
+    print("    set <name> <value>   - Set an environment variable.")
+    print("    del <name>           - Delete an environment variable.")
+    print("    clear                - Clear environment variables that are not System Placeholders.")
     
-    print("\nPlaceholders:")
+    print("\nSystem Placeholders:")
     print("  ${random}              - A random 2-digit number.")
     print("  ${hr}                  - The current hour.")
     print("  ${min}                 - The current minute.")
@@ -80,6 +93,8 @@ def helpz():
     print("  ${month}               - The current month.")
     print("  ${day}                 - The current day.")
     print("  ${week}                - The current week.")
+    print("  ${env}                 - All environment variables.")
+    print("  ${<variable name>}     - Value of the specified environment variable.")
 
 def clear_line():
     """Clear the current line in the shell."""
@@ -108,6 +123,9 @@ def message_handler(client, server, message):
     elif "/warno: " in message:
         print(colored(message.replace("/warno: ", ""), 'light_yellow'))
         print(colored("<sdb>: ", 'light_yellow'), end="")
+    elif "/donern/s " in message:
+        print(colored("Success!", "light_blue"))
+        print("<sdb>: ", end="")
     else:
         clear_line()
         print(f"Client {client['id']}: {message}")
@@ -116,17 +134,11 @@ def message_handler(client, server, message):
 
 def client_disconnect(client, server):
     """Handle client disconnection."""
-    clear_line()
-    print(f"Client {client['id']} has left.")
-    print("<sdb>: ", end="")
-    sys.stdout.flush()
+    connected_clients.remove(client)
 
 def new_client_connection(client, server):
     """Handle new client connection."""
-    clear_line()
-    print(f"Client {client['id']} has joined.")
-    print("<sdb>: ", end="")
-    sys.stdout.flush()
+    connected_clients.append(client)
 
 class WebSocketServerThread(threading.Thread):
     def __init__(self, name):
@@ -177,13 +189,13 @@ def daemon():
         quit_websocket.close()
     else:
         sock.close()
-    os.system('cls' if os.name == 'nt' else 'clear')
     # Initialize and start the WebSocket server
     global server
     server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
     server.set_fn_message_received(message_handler)
-    server.set_fn_client_left(client_disconnect)
-    server.set_fn_new_client(new_client_connection)
+    if args.run is not None:
+        server.set_fn_client_left(client_disconnect)
+        server.set_fn_new_client(new_client_connection)
     initiate_server()
 
 if not any(vars(args).values()):
@@ -191,25 +203,44 @@ if not any(vars(args).values()):
 else:
     if args.cmds:
         helpz()
+
 if args.shell:
-        print("Scratch Debug Bridge")
-        print("By: Codefoxy")
-        daemon()
-        try:
-            while not stop:
-                clear_line()
-                user_input = input("<sdb>: ")
-                clear_line()
-                if user_input == "clear":
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                elif user_input == "help":
-                    helpz()
-                else:
-                    server.send_message_to_all(user_input)
-                time.sleep(0.09)
-        except KeyboardInterrupt:
-            server.shutdown_gracefully()
-            stop = True
-            print("\nDaemon stopped.")
-            server_thread.raise_exception()
-            server_thread.join()
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("Scratch Debug Bridge")
+    print("By: Codefoxy")
+    daemon()
+    try:
+        while not stop:
+            clear_line()
+            user_input = input("<sdb>: ")
+            clear_line()
+            if user_input == "clear":
+                os.system('cls' if os.name == 'nt' else 'clear')
+            elif user_input == "help":
+                helpz()
+            elif user_input == "exit":
+                server.shutdown_gracefully()
+                stop = True
+                print("\nDaemon stopped.")
+                server_thread.raise_exception()
+                server_thread.join()
+            else:
+                for client in connected_clients:
+                    server.send_message(client, user_input)
+            time.sleep(0.09)
+    except KeyboardInterrupt:
+        server.shutdown_gracefully()
+        stop = True
+        print("\nDaemon stopped.")
+        server_thread.raise_exception()
+        server_thread.join()
+elif args.run is not None:
+    daemon()
+    while not connected_clients:
+        time.sleep(1)
+    run_command = ' '.join(args.run)
+    for client in connected_clients:
+        server.send_message(client, run_command)
+    server_thread.raise_exception()
+    server_thread.join()
+    stop = True
