@@ -7,6 +7,7 @@ $scriptName = "Serv.py"
 $exeName = "Serv.exe"
 $finalExeName = "sdb.exe"
 $iconUrl = "https://files.catbox.moe/405st1.ico"
+# $iconUrl = "
 $expatch = (Get-Item .).FullName
 Clear-Host
 Write-Output "Installing necessary packages..."

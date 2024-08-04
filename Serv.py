@@ -76,9 +76,11 @@ def helpz():
     print("  help                   - Display this help message.")
     print("    sprite               - Display help for sprite commands.")
     print("    var                  - Display help for variable commands.")
+    print("  flag                   - Click The Green flag in Scratch.")
+    print("  restart                - Restart the project.")
 
     print("\nEnvironment variables:")
-    print("  env                    - Environment variables ex. ${name}")
+    print("  env                    - Environment variables (e.g., ${name})")
     print("    list                 - List all environment variables.")
     print("    set <name> <value>   - Set an environment variable.")
     print("    del <name>           - Delete an environment variable.")
@@ -94,6 +96,17 @@ def helpz():
     print("  ${day}                 - The current day.")
     print("  ${week}                - The current week.")
     print("  ${env}                 - All environment variables.")
+    print("  ${url}                 - The URL of the current web page.")
+    print("  ${browser}             - The name of the current browser.")
+    print("  ${system}              - The operating system.")
+    print("  ${battery}             - The current battery level.")
+    print("  ${turbo}               - The turbo mode status.")
+    print("  ${internet}            - The current internet connection status.")
+    print("  ${fps}                 - The frames per second of the current environment.")
+    print("  ${delta}               - The delta time since the last frame.")
+    print("  ${clone}               - The number of clones of the sprite.")
+    print("  ${width}               - The width of the current stage or sprite.")
+    print("  ${height}              - The height of the current stage or sprite.")
     print("  ${<variable name>}     - Value of the specified environment variable.")
 
 def clear_line():
@@ -213,7 +226,8 @@ else:
         helpz()
 
 if args.shell:
-    os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('title Scratch Debug Bridge' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'PS1=\'\\[\\e]0;Scratch Debug Bridge\\a\\]\\u@\\h\\w\\$\'')
     print("Scratch Debug Bridge")
     print("By: Codefoxy")
     daemon()
@@ -248,7 +262,7 @@ if args.shell:
 elif args.run is not None:
     daemon()
     while not connected_clients:
-        time.sleep(1)
+        time.sleep(0.01)
     run_command = ' '.join(args.run)
     for client in connected_clients:
         server.send_message(client, run_command)
