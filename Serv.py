@@ -131,14 +131,22 @@ def message_handler(client, server, message):
         print(f"Client {client['id']}: {message}")
         print("<sdb>: ", end="")
         sys.stdout.flush()
-
 def client_disconnect(client, server):
     """Handle client disconnection."""
+    clear_line()
+    print(f"Client {client['id']} has left.")
+    print("<sdb>: ", end="")
+    sys.stdout.flush()
     connected_clients.remove(client)
 
 def new_client_connection(client, server):
     """Handle new client connection."""
+    clear_line()
+    print(f"Client {client['id']} has joined.")
+    print("<sdb>: ", end="")
+    sys.stdout.flush()
     connected_clients.append(client)
+
 
 class WebSocketServerThread(threading.Thread):
     def __init__(self, name):
@@ -225,8 +233,11 @@ if args.shell:
                 server_thread.raise_exception()
                 server_thread.join()
             else:
-                for client in connected_clients:
-                    server.send_message(client, user_input)
+                if not connected_clients:    
+                    server.send_message_to_all(user_input)
+                else:
+                    print(colored("Warning: No client connected!", 'light_yellow'))
+                    print(colored("<sdb>: ", 'light_yellow'), end="")
             time.sleep(0.09)
     except KeyboardInterrupt:
         server.shutdown_gracefully()
