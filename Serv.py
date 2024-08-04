@@ -91,7 +91,7 @@ def helpz():
     print("  ${hr}                  - The current hour.")
     print("  ${min}                 - The current minute.")
     print("  ${sec}                 - The current second.")
-    print("  ${year}                - A random 4-digit number.")
+    print("  ${year}                - The current year.")
     print("  ${month}               - The current month.")
     print("  ${day}                 - The current day.")
     print("  ${week}                - The current week.")
