@@ -11,12 +11,12 @@ import os
 from termcolor import colored
 
 # Globals
-global client_even_1
 stop = False
 server_thread = None
 server = None
 connected_clients = []
 client_even_1 = False
+
 # Argument Parser
 parser = argparse.ArgumentParser(
     prog="sdb",
@@ -116,6 +116,7 @@ def clear_line():
 
 def message_handler(client, server, message):
     """Handle incoming messages from clients."""
+    global client_even_1
     client_even_1 = True
     if message == "heartbeat.ping":
         server.send_message(client, "pong")
@@ -153,6 +154,8 @@ def client_disconnect(client, server):
     print("<sdb>: ", end="")
     sys.stdout.flush()
     connected_clients.remove(client)
+    global client_even_1
+    client_even_1 = False
 
 def new_client_connection(client, server):
     """Handle new client connection."""
@@ -160,6 +163,8 @@ def new_client_connection(client, server):
     print(f"Client {client['id']} has joined.")
     print("<sdb>: ", end="")
     sys.stdout.flush()
+    global client_even_1
+    client_even_1 = True
     connected_clients.append(client)
 
 class WebSocketServerThread(threading.Thread):
@@ -201,24 +206,28 @@ def initiate_server():
 def daemon():
     print("Starting the daemon...")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    result = sock.connect_ex(('localhost', 4328))
-    if result == 0:
-        print("Daemon is already running. Stopping it now.")
-        sock.close()
-        quit_websocket = websocket.WebSocket()
-        quit_websocket.connect("ws://localhost:4328")
-        quit_websocket.send("splsleave")
-        quit_websocket.close()
-    else:
-        sock.close()
-    # Initialize and start the WebSocket server
-    global server
-    server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
-    server.set_fn_message_received(message_handler)
-    if args.run is not None:
-        server.set_fn_client_left(client_disconnect)
-        server.set_fn_new_client(new_client_connection)
-    initiate_server()
+    try:
+        result = sock.connect_ex(('localhost', 4328))
+        if result == 0:
+            print("Daemon is already running. Stopping it now.")
+            sock.close()
+            quit_websocket = websocket.WebSocket()
+            quit_websocket.connect("ws://localhost:4328")
+            quit_websocket.send("splsleave")
+            quit_websocket.close()
+        else:
+            sock.close()
+        # Initialize and start the WebSocket server
+        global server
+        server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
+        server.set_fn_message_received(message_handler)
+        if args.run is None:
+            server.set_fn_client_left(client_disconnect)
+            server.set_fn_new_client(new_client_connection)
+        initiate_server()
+    except Exception as e:
+        logging.error(f"Error initializing server: {e}")
+        sys.exit(1)
 
 if not any(vars(args).values()):
     parser.print_help()
