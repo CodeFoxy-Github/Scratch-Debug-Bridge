@@ -79,7 +79,7 @@ def helpz():
     print("  flag                   - Click The Green flag in Scratch.")
     print("  restart                - Restart the project.")
     print("  stop                   - Stop the project.")
-    
+
     print("\nEnvironment variables:")
     print("  env                    - Environment variables (e.g., ${name})")
     print("    list                 - List all environment variables.")
@@ -223,6 +223,10 @@ def daemon():
             sock.close()
         # Initialize and start the WebSocket server
         global server
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        print(f"Connect to {colored("ws://localhost:4328", 'light_yellow')} or {colored(s.getsockname()[0], 'light_yellow')}.")
+        s.close()
         server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
         server.set_fn_message_received(message_handler)
         if args.run is None:
