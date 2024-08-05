@@ -28,7 +28,7 @@ Then, open the `Package` directory and click on your OS's one-click build script
 ### Running SDB
 
 You can run SDB in different modes using the command line arguments.
-
+But you need to make sure the Sdb sprite is running
 #### Running the SDB Shell
 
 ```
