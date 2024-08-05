@@ -141,6 +141,9 @@ def message_handler(client, server, message):
     elif "/donern/s " in message:
         print(colored("Success!", "light_blue"))
         print("<sdb>: ", end="")
+    elif "tmsf r" in message :
+        print(colored(message.replace("tmsf r", ""), 'light_cyan'))
+        print(colored("<sdb>: ", 'light_cyan'), end="")
     else:
         clear_line()
         print(f"Client {client['id']}: {message}")
