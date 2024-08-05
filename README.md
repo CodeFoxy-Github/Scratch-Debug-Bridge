@@ -4,7 +4,7 @@
 
 A remote debugger similar to adb but for Scratch. This tool allows you to connect to and debug Scratch projects remotely.
 [![Build for Windows](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/winBuild.yml/badge.svg)](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/winBuild.yml)
-[![Build for Linux](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/linuxBuild.yml/badge.svg)](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/linuxBuild.yml)
+[![Build for Linux](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/linuxBuild.yaml/badge.svg)](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/linuxBuild.yaml)
 ## Features
 
 *   Connect to Scratch projects remotely
