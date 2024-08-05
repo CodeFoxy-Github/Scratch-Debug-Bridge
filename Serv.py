@@ -141,9 +141,10 @@ def message_handler(client, server, message):
     elif "/donern/s " in message:
         print(colored("Success!", "light_blue"))
         print("<sdb>: ", end="")
-    elif "tmsf r" in message :
+    elif "tmsf r" in message:
         print(colored(message.replace("tmsf r", ""), 'light_cyan'))
-        print(colored("<sdb>: ", 'light_cyan'), end="")
+        print("<sdb>: ", end="")
+        sys.stdout.flush()
     else:
         clear_line()
         print(f"Client {client['id']}: {message}")
@@ -156,7 +157,6 @@ def client_disconnect(client, server):
     print(f"Client {client['id']} has left.")
     print("<sdb>: ", end="")
     sys.stdout.flush()
-    connected_clients.remove(client)
     global client_even_1
     client_even_1 = False
 
@@ -271,6 +271,7 @@ if args.shell:
         print("\nDaemon stopped.")
         server_thread.raise_exception()
         server_thread.join()
+        sys.exit(0)
 elif args.run is not None:
     daemon()
     while not client_even_1:
