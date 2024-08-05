@@ -33,3 +33,10 @@ jobs:
         git add --all
         git commit -m "Action Auto Build." -a    
         git push
+# cus this is slow so relese is on him
+    - name: Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          sdb
+          sdb.exe
