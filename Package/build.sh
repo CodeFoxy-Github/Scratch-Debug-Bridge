@@ -45,7 +45,35 @@ clear
 # Build the executable
 echo "Building..."
 pyinstaller -F --icon="$expath/icon.ico" $script_name
-# lemme test
+
+# Delete the Serv.spec file if it exists
+if [ -f "./Serv.spec" ]; then
+    rm "./Serv.spec"
+fi
+
+# Delete the build folder if it exists
+if [ -d "./build" ]; then
+    rm -rf "./build"
+fi
+
+# Delete the icon and requirements file if they exist
+if [ -f "./icon.ico" ]; then
+    rm "./icon.ico"
+fi
+if [ -f "./requirements.txt" ]; then
+    rm "./requirements.txt"
+fi
+
+# Copy the executable from the dist folder and rename it to the final name
+if [ -f "./dist/$build_name" ]; then
+    cp "./dist/$build_name" "./$final_file_name"
+else
+    echo "Executable not found in dist folder."
+    exit 1
+fi
+
+# Clean up the dist folder
+rm -rf "./dist"
 
 echo "Build complete."
 exit 0
