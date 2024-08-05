@@ -33,19 +33,19 @@ But you need to make sure the Sdb sprite is running
 #### Running the SDB Shell
 
 ```
-python sdb.py -s
+sdb -s
 ```
 
 #### Viewing SDB Commands
 
 ```
-python sdb.py -c
+sdb -c
 ```
 
 #### Running SDB Commands
 #### (Buggy)
 ```
-python sdb.py -r <command>
+sdb -r <command>
 ```
 
 # Commands Available
