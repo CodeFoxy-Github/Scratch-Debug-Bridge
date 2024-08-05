@@ -52,7 +52,6 @@ python sdb.py -r <command>
 ## Variables:
 
 ```
-
 var
    add <var name>          - Add a new variable with the specified name.
    del <var name>          - Delete the variable with the specified name.
@@ -60,13 +59,11 @@ var
    list                    - List all variables.
    show <var name>         - Show the specified variable.
    hide <var name>         - Hide the specified variable.
-    
 ```
 
 ## Sprites:
 
 ```
-
 pos <sprite name> <x> <y>  - Set the position of the sprite.
 get <sprite name>          - Get information about the sprite.
   x                        - Get the x position of the sprite.
@@ -76,13 +73,11 @@ get <sprite name>          - Get information about the sprite.
   costume #                - Get the costume number of the sprite.
   direction                - Get the direction of the sprite.
 list                       - List all sprites.
-    
 ```
 
 ## Utilities:
 
 ```
-
 echo <data>            - Echo the specified data.
 clear                  - Clear the shell screen.
 help                   - Display this help message.
@@ -90,25 +85,21 @@ help                   - Display this help message.
   var                  - Display help for variable commands.
 flag                   - Click The Green flag in Scratch.
 restart                - Restart the project.
-    
 ```
 
 ## Environment variables:
 
 ```
-
 env                    - Environment variables (e.g., ${name})
   list                 - List all environment variables.
   set <name> <value>   - Set an environment variable.
   del <name>           - Delete an environment variable.
   clear                - Clear environment variables that are not System Placeholders.
-    
 ```
 
 ## System Placeholders:
 
 ```
-
 ${random}              - A random 2-digit number.
 ${hr}                  - The current hour.
 ${min}                 - The current minute.
@@ -130,5 +121,4 @@ ${clone}               - The number of clones of the sprite.
 ${width}               - The width of the current stage or sprite.
 ${height}              - The height of the current stage or sprite.
 ${<variable name>}     - Value of the specified environment variable.
-    
 ```
