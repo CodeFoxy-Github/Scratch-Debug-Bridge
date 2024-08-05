@@ -9,14 +9,15 @@ import argparse
 from websocket_server import WebsocketServer
 import os
 from termcolor import colored
-# todo color for join leave
-global stop
-stop = False
-global server_thread
-global server
-global connected_clients
-connected_clients = []
 
+# Globals
+global client_even_1
+stop = False
+server_thread = None
+server = None
+connected_clients = []
+client_even_1 = False
+# Argument Parser
 parser = argparse.ArgumentParser(
     prog="sdb",
     description="A remote debugger similar to adb but for Scratch",
@@ -44,7 +45,6 @@ parser.add_argument(
     help="Run SDB command."
 )
 
-global args
 args = parser.parse_args()
 
 def helpz():
@@ -116,6 +116,7 @@ def clear_line():
 
 def message_handler(client, server, message):
     """Handle incoming messages from clients."""
+    client_even_1 = True
     if message == "heartbeat.ping":
         server.send_message(client, "pong")
         logging.info(f"Client {client['id']} sent a ping!")
@@ -144,6 +145,7 @@ def message_handler(client, server, message):
         print(f"Client {client['id']}: {message}")
         print("<sdb>: ", end="")
         sys.stdout.flush()
+
 def client_disconnect(client, server):
     """Handle client disconnection."""
     clear_line()
@@ -159,7 +161,6 @@ def new_client_connection(client, server):
     print("<sdb>: ", end="")
     sys.stdout.flush()
     connected_clients.append(client)
-
 
 class WebSocketServerThread(threading.Thread):
     def __init__(self, name):
@@ -248,7 +249,7 @@ if args.shell:
                 server_thread.join()
             else:
                 server.send_message_to_all(user_input)
-                if connected_clients == []: # Some Python Bug
+                if not client_even_1:
                     print(colored("Warning: No client connected!", 'light_yellow'))
                     print(colored("<sdb>: ", 'light_yellow'), end="")
             time.sleep(0.09)
@@ -260,7 +261,7 @@ if args.shell:
         server_thread.join()
 elif args.run is not None:
     daemon()
-    while not connected_clients:
+    while not client_even_1:
         time.sleep(0.01)
     run_command = ' '.join(args.run)
     for client in connected_clients:
