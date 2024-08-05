@@ -4,7 +4,7 @@ cd ..
 
 # Define the Python script name and other variables
 script_name="Serv.py"
-final_exe_name="sdb"
+final_file_name="sdb"
 icon_url="https://files.catbox.moe/405st1.ico"
 
 # Get the full path of the current directory
@@ -44,12 +44,7 @@ clear
 
 # Build the executable
 echo "Building..."
-pyinstaller --onefile --icon="$expath/icon.ico" $script_name
-
-# Delete the final executable if it already exists
-if [ -f "./$final_exe_name" ]; then
-    rm "./$final_exe_name"
-fi
+pyinstaller -F --icon="$expath/icon.ico" $script_name
 
 # Delete the Serv.spec file if it exists
 if [ -f "./Serv.spec" ]; then
@@ -71,7 +66,7 @@ fi
 
 # Copy the executable from the dist folder and rename it to the final name
 if [ -f "./dist/$script_name" ]; then
-    cp "./dist/$script_name" "./$final_exe_name"
+    cp "./dist/$script_name" "./$final_file_name"
 else
     echo "Executable not found in dist folder."
     exit 1
