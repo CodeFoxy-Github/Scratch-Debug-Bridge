@@ -42,7 +42,7 @@ python sdb.py -c
 ```
 
 #### Running SDB Commands
-
+#### (Buggy)
 ```
 python sdb.py -r <command>
 ```
