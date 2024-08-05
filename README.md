@@ -14,32 +14,12 @@ A remote debugger similar to adb but for Scratch. This tool allows you to connec
 ## Requirements
 
 *   Python 3.x
-*   Required Python packages: `websocket-server`, `termcolor`, `websocket-client`
+*   (Will Auto Install Python packages)
 
-## Installation
-
-1.  Clone the repository:
-    
-    ```
-    git clone https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge
-    ```
-    
-2.  Navigate to the project directory:
-    
-    ```
-    cd Scratch-Debug-Bridge
-    ```
-    
-3.  Install the required packages:
-    
-    ```
-    pip install websocket-server termcolor websocket-client
-    ```
-    
 
 ## Usage
 
-### Build (if on Linux)
+### Build
 
 If you are running on Linux, ensure you give execute permissions to the build script first.
 
