@@ -6,11 +6,11 @@ cd ..
 script_name="Serv.py"
 final_file_name="sdb"
 icon_url="https://files.catbox.moe/405st1.ico"
-
+build_name="Serv"
 # Get the full path of the current directory
 expath=$(pwd)
 
-# Clear the terminal
+# clear the terminal
 clear
 
 # Install necessary packages
@@ -18,28 +18,28 @@ echo "Installing necessary packages..."
 pip install pyinstaller
 pip install pipreqs
 
-# Clear the terminal
+# clear the terminal
 clear
 
 # Generate requirements.txt file
 echo "Generating requirements.txt file..."
 pipreqs ./ --encoding=utf8
 
-# Clear the terminal
+# clear the terminal
 clear
 
 # Download App packages
 echo "Downloading App packages..."
 pip install -r requirements.txt
 
-# Clear the terminal
+# clear the terminal
 clear
 
 # Download App Icon
 echo "Downloading App Icon..."
 wget -O icon.ico $icon_url
 
-# Clear the terminal
+# clear the terminal
 clear
 
 # Build the executable
@@ -66,7 +66,7 @@ fi
 
 # Copy the executable from the dist folder and rename it to the final name
 if [ -f "./dist/$script_name" ]; then
-    cp "./dist/$script_name" "./$final_file_name"
+    cp "./dist/$build_name" "./$final_file_name"
 else
     echo "Executable not found in dist folder."
     exit 1
