@@ -247,12 +247,10 @@ if args.shell:
                 server_thread.raise_exception()
                 server_thread.join()
             else:
-                if not connected_clients:    
-                    server.send_message_to_all(user_input)
-                while not connected_clients:
+                server.send_message_to_all(user_input)
+                if connected_clients == []: # Some Python Bug
                     print(colored("Warning: No client connected!", 'light_yellow'))
                     print(colored("<sdb>: ", 'light_yellow'), end="")
-                    break
             time.sleep(0.09)
     except KeyboardInterrupt:
         server.shutdown_gracefully()
@@ -267,6 +265,4 @@ elif args.run is not None:
     run_command = ' '.join(args.run)
     for client in connected_clients:
         server.send_message(client, run_command)
-    server_thread.raise_exception()
-    server_thread.join()
-    stop = True
+    server.disconnect_clients_abruptly()
