@@ -78,7 +78,8 @@ def helpz():
     print("    var                  - Display help for variable commands.")
     print("  flag                   - Click The Green flag in Scratch.")
     print("  restart                - Restart the project.")
-
+    print("  stop                   - Stop the project.")
+    
     print("\nEnvironment variables:")
     print("  env                    - Environment variables (e.g., ${name})")
     print("    list                 - List all environment variables.")

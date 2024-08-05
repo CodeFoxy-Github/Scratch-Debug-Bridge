@@ -86,6 +86,7 @@ help                   - Display this help message.
   var                  - Display help for variable commands.
 flag                   - Click The Green flag in Scratch.
 restart                - Restart the project.
+stop                   - Stop the project.
 ```
 
 ## Environment variables:
