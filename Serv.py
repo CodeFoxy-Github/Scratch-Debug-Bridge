@@ -227,7 +227,7 @@ def daemon():
         global server
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
-        print(f"Connect to {colored("ws://localhost:4328", 'light_yellow')} or {colored(s.getsockname()[0] + ":4328", 'light_yellow')}.")
+        print(f"Connect to {colored('ws://localhost:4328', 'light_yellow')} or {colored(s.getsockname()[0] + ':4328', 'light_yellow')}.")
         s.close()
         server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
         server.set_fn_message_received(message_handler)
