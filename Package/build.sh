@@ -4,7 +4,7 @@ cd ..
 
 # Define the Python script name and other variables
 script_name="Serv.py"
-final_file_name="sdb"
+final_file_name="sdb-amb64-linux"
 icon_url="https://files.catbox.moe/405st1.ico"
 build_name="Serv"
 # Get the full path of the current directory
