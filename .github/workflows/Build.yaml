@@ -53,8 +53,11 @@ jobs:
         git pull
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
-        git add build/sdb-amd64-windows.exe
+        cd Build
+        git add sdb-amd64-windows.exe
+        git pull
         git commit -m "Auto Build For Windows." -a || true  
+        git pull
         git push
     - name: Release
       uses: softprops/action-gh-release@v1
