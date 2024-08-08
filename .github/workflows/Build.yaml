@@ -52,7 +52,7 @@ jobs:
         git pull
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
-        git add --all
+        git add build/sdb-amd64-windows.exe
         git commit -m "Auto Build For Windows." -a || true  
         git push
     - name: Release
