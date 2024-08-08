@@ -1,0 +1,67 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Build
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-For-Linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install and Build
+      run: |
+        cd Package
+        chmod +x ./build.sh
+        ./build.sh
+
+    - name: Commit files
+      id: commit
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "github-actions"
+        git add --all
+        git commit -m "Auto Build For Linux." -a    
+        git push
+        
+  build-For-Windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install and Build
+      run: |
+        cd Package
+        Powershell.exe -executionpolicy remotesigned -File ./build.ps1
+
+    - name: Commit files
+      id: commit
+      run: |
+        git pull
+        git config --local user.email "action@github.com"
+        git config --local user.name "github-actions"
+        git add --all
+        git commit -m "Auto Build For Windows." -a    
+        git push
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+         tag_name: ${{github.ref_name}}
+         body: Pre-Relese ${{github.event.workflow_run.head_commit.message}}
+         prerelease: true
+         token: ${{ secrets.GITHUB_TOKEN }}
+         files: |
+           build/windows/x64/runner/Output/${{env.WINDOWS_INSTALLER_NAME}}.exe
+           build/windows/x64/runner/Release/${{env.WINDOWS_PORTABLE_NAME}}.zip
