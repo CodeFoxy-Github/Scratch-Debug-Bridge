@@ -16,7 +16,6 @@ server_thread = None
 server = None
 connected_clients = []
 client_even_1 = False
-
 # Argument Parser
 parser = argparse.ArgumentParser(
     prog="sdb",
@@ -143,7 +142,7 @@ def message_handler(client, server, message):
         print(colored("Success!", "light_blue"))
         print("<sdb>: ", end="")
     elif "tmsf r" in message:
-        print(colored(message.replace("tmsf r", ""), 'light_cyan'))
+        print(colored(message.replace("tmsf r", ""), 'light_blue'))
         print("<sdb>: ", end="")
         sys.stdout.flush()
     else:
@@ -227,7 +226,7 @@ def daemon():
         global server
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
-        print(f"Connect to {colored('ws://localhost:4328', 'light_yellow')} or {colored(s.getsockname()[0] + ':4328', 'light_yellow')}.")
+        print(f"Connect to {colored('ws://localhost:4328', 'light_yellow')} or {colored('ws://' + s.getsockname()[0] + ':4328', 'light_yellow')}.")
         s.close()
         server = WebsocketServer(host='127.0.0.1', port=4328, loglevel=logging.ERROR)
         server.set_fn_message_received(message_handler)
