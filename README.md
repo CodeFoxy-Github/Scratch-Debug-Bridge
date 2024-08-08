@@ -1,8 +1,8 @@
 # Scratch Debug Bridge (SDB)
-**
+
 Latest Build Status: [![Build](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/Build.yaml/badge.svg)](https://github.com/CodeFoxy-Github/Scratch-Debug-Bridge/actions/workflows/Build.yaml)
 </br>
-A remote debugger similar to adb but for Scratch. This tool allows you to connect to and debug Scratch projects remotely.
+**A remote debugger similar to adb but for Scratch. This tool allows you to connect to and debug Scratch projects remotely.**
 ## Features
 
 *   Connect to Scratch projects remotely
@@ -122,4 +122,3 @@ ${width}               - The width of the current stage or sprite.
 ${height}              - The height of the current stage or sprite.
 ${<variable name>}     - Value of the specified environment variable.
 ```
-**
