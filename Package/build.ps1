@@ -5,7 +5,7 @@ $ErrorActionPreference = "Stop"
 # Define the Python script name
 $scriptName = "Serv.py"
 $exeName = "Serv.exe"
-$finalExeName = "sdb-amb64-windows.exe"
+$finalExeName = "sdb-amd64-windows.exe"
 $iconUrl = "https://files.catbox.moe/405st1.ico"
 # $iconUrl = "
 $expatch = (Get-Item .).FullName
