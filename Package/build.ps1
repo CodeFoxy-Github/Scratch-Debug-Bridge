@@ -58,7 +58,7 @@ if (Test-Path "./icon.ico") {
 if (Test-Path "./requirements.txt") {
     Remove-Item -Path "./requirements.txt" -Recurse -Force
 }
-
+mkdir Build
 # Copy the executable from the dist folder and rename it to sdb.exe
 if (Test-Path "./dist/$exeName") {
     Copy-Item -Path "./dist/$exeName" -Destination "./Build/$finalExeName" -Force

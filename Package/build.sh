@@ -65,7 +65,7 @@ fi
 if [ -f "./requirements.txt" ]; then
     rm "./requirements.txt"
 fi
-
+mkdir Build
 # Copy the executable from the dist folder and rename it to the final name
 if [ -f "./dist/$build_name" ]; then
     cp "./dist/$build_name" "./Build/$final_file_name"
