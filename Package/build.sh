@@ -50,7 +50,9 @@ pyinstaller -F --icon="$expath/icon.ico" $script_name
 if [ -f "./Serv.spec" ]; then
     rm "./Serv.spec"
 fi
-
+if [ -f "./Serv.spec" ]; then
+    rm "./Serv.spec"
+fi
 # Delete the build folder if it exists
 if [ -d "./build" ]; then
     rm -rf "./build"
