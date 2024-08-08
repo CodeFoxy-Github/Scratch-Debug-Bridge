@@ -53,15 +53,15 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
         git add --all
-        git commit -m "Auto Build For Windows." -a    
+        git commit -m "Auto Build For Windows." -a || true  
         git push
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
          tag_name: ${{github.ref_name}}
-         body: Pre-Relese ${{github.event.workflow_run.head_commit.message}}
+         body: ✨Pre-Relese ${{github.event.workflow_run.head_commit.message}}
          prerelease: true
          token: ${{ secrets.GITHUB_TOKEN }}
          files: |
-           build/windows/x64/runner/Output/${{env.WINDOWS_INSTALLER_NAME}}.exe
-           build/windows/x64/runner/Release/${{env.WINDOWS_PORTABLE_NAME}}.zip
+           build/sdb-amd64-windows.exe
+           build/sdb-amd64-linux
