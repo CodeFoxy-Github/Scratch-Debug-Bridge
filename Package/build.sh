@@ -66,7 +66,7 @@ fi
 
 # Copy the executable from the dist folder and rename it to the final name
 if [ -f "./dist/$build_name" ]; then
-    cp "./dist/$build_name" "./$final_file_name"
+    cp "./dist/$build_name" "./Build/$final_file_name"
 else
     echo "Executable not found in dist folder."
     exit 1

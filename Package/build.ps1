@@ -61,7 +61,7 @@ if (Test-Path "./requirements.txt") {
 
 # Copy the executable from the dist folder and rename it to sdb.exe
 if (Test-Path "./dist/$exeName") {
-    Copy-Item -Path "./dist/$exeName" -Destination "./$finalExeName" -Force
+    Copy-Item -Path "./dist/$exeName" -Destination "./Build/$finalExeName" -Force
 } else {
     Write-Error "Executable not found in dist folder."
 }
