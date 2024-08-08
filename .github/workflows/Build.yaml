@@ -31,7 +31,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
-        git add --all
+        git add build/sdb-amd64-linux
         git commit -m "Auto Build For Linux." -a  || true 
         git push
         
@@ -58,7 +58,7 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-         tag_name: ${{github.ref_name}}
+         tag_name: ${{github.ref_name}}Build ID-${{ github.run_id }}-${{ github.run_attempt }}
          body: ✨Pre-Relese ${{github.event.workflow_run.head_commit.message}}
          prerelease: true
          token: ${{ secrets.GITHUB_TOKEN }}
