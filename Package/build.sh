@@ -72,6 +72,7 @@ else
     echo "Executable not found in dist folder."
     exit 1
 fi
+cd Build
 ls
 # Clean up the dist folder
 rm -rf "./dist"
