@@ -31,7 +31,8 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "github-actions"
-        git add build/sdb-amd64-linux
+        cd Build
+        git add sdb-amd64-linux
         git commit -m "Auto Build For Linux." -a  || true 
         git push
         
